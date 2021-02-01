@@ -50,7 +50,7 @@ def order(self, P):
     return orderP
 
 
-# In[86]:
+# In[94]:
 
 
 def sign(m):
@@ -67,19 +67,21 @@ def sign(m):
     k = random. randint(1,100)
     n = myCurve.q
     d = private_key
+    G = myCurve.G
     print("this is n:",n)
     
-    [x1,y1] = np.dot(k , [public_key.x,public_key.y])
-    r = pow(x1,1,n)
+    x1y1 = k*G
+    r = pow(x1y1.x,1,n)
     z = int.from_bytes((hashlib.sha256(m.encode('utf-8')).digest()),'big')
-    s = (modinv(k, n)*pow(z+r*d,1,n))%n
+    s = modinv(k,n)*(z+r*d)%n
+    
     
     #r = 0
     #s = 0
     return( public_key, [r,s] )
 
 
-# In[87]:
+# In[95]:
 
 
 m = "Hello World"
